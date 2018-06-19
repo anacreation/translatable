@@ -1,0 +1,22 @@
+{
+  "name": "anacreation/translatable",
+  "description": "Translate Model",
+  "type": "lib",
+  "license": "MIT",
+  "authors": [
+	{
+	  "name": "Xavier Au",
+	  "email": "xavier.au@anacreation.com"
+	}
+  ],
+  "minimum-stability": "dev",
+  "require": {
+	"php": ">=7.1.0",
+	"laravel/framework": "5.5.*"
+  },
+  "autoload": {
+	"psr-4": {
+	  "Anacreation\\Translatable\\": "src"
+	}
+  }
+}
