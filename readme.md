@@ -1,18 +1,38 @@
-# API Documentation
+# Overview
+This add translation to `Eloquent Model`
+
+# Installation
+
+```php
+composer require anacreation/translatable
+```
 
 Eloquent model that use the
 ```php
-Anacreation\traits\TranslatableTrait
+
+namespace App;
+
+use Anacreation\Translatable\traits\TranslatableTrait;
+use Illuminate\Database\Eloquent\Model;
+
+class Product extends Model
+{
+    use TranslatableTrait;
+}
+
+
 ```
 
 can use the following APIs
+
+## Usage
 
 ## Create and update translations
 
 #### createModelWithTranslations( array $attributes = [], array $content): Model
 the $content has a predefine format
 
-    [
+    $content = [
         "language_code_1"=>[
             "attribute_1" => "value 1",
             "attribute_2" => "value 2",
@@ -25,6 +45,8 @@ the $content has a predefine format
             "attribute_3" => "value 6",
         ]
     ]
+
+    $newModel = Model::createModelWithTranslations($attributes, $content);
 
 it create a model instance and save the content
 
@@ -50,14 +72,14 @@ Then defalut fallback is set to false, no fallback if content is null.
 
 The fall back system is very simple. if you have set the config fallback_locale **and** set the eloquent model fallback to true
 ```php
-model->fallback = true;
+$model->fallback = true;
 ```
 
 then if the translation for particular attribute is null. It will try to get the translation for fallback locale.
 
 ### Retrieve all translation
 ```php
-$translation_array = model->translatables;
+$translation_array = $model->translatables;
 ```
 this will return a array as above.
 The translation array has structure as below:
