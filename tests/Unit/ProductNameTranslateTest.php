@@ -26,7 +26,7 @@ class ProductNameTranslateTest extends TestCase
         ];
 
 
-        $newProduct = Product::createTranslations($data);
+        $newProduct = Product::createModelWithTranslations([], $data);
 
         $this->assertDatabaseHas("translations", [
             'model_id'   => $newProduct->id,
@@ -58,7 +58,7 @@ class ProductNameTranslateTest extends TestCase
         ];
 
 
-        $newProduct = Product::createTranslations($data);
+        $newProduct = Product::createModelWithTranslations([], $data);
 
         $newData = [
             'zh_tw' => [

@@ -26,7 +26,7 @@ class OverallFallbackTest extends TestCase
         ];
 
 
-        $newProduct = Product::createTranslations($data);
+        $newProduct = Product::createModelWithTranslations([], $data);
 
         $newProduct->fallback = true;
 
@@ -48,7 +48,7 @@ class OverallFallbackTest extends TestCase
         ];
 
 
-        $newProduct = Product::createTranslations($data);
+        $newProduct = Product::createModelWithTranslations([], $data);
 
         $newProduct->fallback = true;
 
@@ -71,7 +71,7 @@ class OverallFallbackTest extends TestCase
         ];
 
 
-        $newProduct = Product::createTranslations($data);
+        $newProduct = Product::createModelWithTranslations([], $data);
 
         app()->setLocale("es");
 

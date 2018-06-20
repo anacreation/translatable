@@ -26,7 +26,7 @@ class GetProductTranslatableTest extends TestCase
             ]
         ];
 
-        $newProduct = Product::createTranslations($data);
+        $newProduct = Product::createModelWithTranslations([], $data);
 
         $retrievedData = $newProduct->translatables;
 

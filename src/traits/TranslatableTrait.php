@@ -9,6 +9,7 @@ namespace Anacreation\Translatable\traits;
 
 
 use Anacreation\Translatable\Models\Translatable;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
 
 trait TranslatableTrait
@@ -30,9 +31,11 @@ trait TranslatableTrait
      * @param array $content
      * @return mixed
      */
-    public static function createTranslations(array $content) {
+    public static function createModelWithTranslations(
+        array $attributes = [], array $content
+    ): Model {
 
-        $newInstance = self::createNewInstance();
+        $newInstance = self::createNewInstance($attributes);
 
         foreach ($content as $code => $value) {
 
@@ -45,7 +48,7 @@ trait TranslatableTrait
     /**
      * @param array $content
      */
-    public function updateTranslations(array $content) {
+    public function updateTranslations(array $content): void {
 
         foreach ($content as $code => $value) {
 
@@ -125,8 +128,8 @@ trait TranslatableTrait
     /**
      * @return mixed
      */
-    private static function createNewInstance() {
-        return static::create();
+    private static function createNewInstance(array $attributes = []) {
+        return static::create($attributes);
     }
 
 

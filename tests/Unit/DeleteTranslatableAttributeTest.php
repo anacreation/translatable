@@ -9,6 +9,7 @@ use Tests\TestCase;
 class DeleteTranslatableAttributeTest extends TestCase
 {
     use DatabaseMigrations;
+
     /**
      * A basic test example.
      *
@@ -29,7 +30,7 @@ class DeleteTranslatableAttributeTest extends TestCase
             ]
         ];
 
-        $newProduct = Product::createTranslations($data);
+        $newProduct = Product::createModelWithTranslations([], $data);
 
         $newProduct->deleteTranslatableAttribute('attr1');
 
@@ -56,7 +57,7 @@ class DeleteTranslatableAttributeTest extends TestCase
             ]
         ];
 
-        $newProduct = Product::createTranslations($data);
+        $newProduct = Product::createModelWithTranslations([], $data);
 
         $newProduct->deleteTranslatableAttribute('attr1', 'en');
 
