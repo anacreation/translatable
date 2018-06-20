@@ -29,8 +29,8 @@ can use the following APIs
 
 ## Create and update translations
 
-#### createModelWithTranslations( array $attributes = [], array $content): Model
-the $content has a predefine format
+#### `createModelWithTranslations( array $attributes = [], array $content): Model`
+the `$content` has a predefine format
 
     $content = [
         "language_code_1"=>[
@@ -50,7 +50,7 @@ the $content has a predefine format
 
 it create a model instance and save the content
 
-#### updateTranslations(array $content): void
+#### `updateTranslations(array $content): void`
 
 No matter for create new language transaltion or update existing language. Simple call this funciton.
 The $content structure is same as above.
@@ -68,14 +68,14 @@ this will automatically fetch the translation base on your current locale settin
 app()->getLocale();
 ```
 ### Fallback
-Then defalut fallback is set to false, no fallback if content is null.
+Then defalut fallback is set to `false`, no fallback if content is `null`.
 
-The fall back system is very simple. if you have set the config fallback_locale **and** set the eloquent model fallback to true
+The fall back system is very simple. if you have set the config fallback_locale **and** set the eloquent model fallback to `true`
 ```php
 $model->fallback = true;
 ```
 
-then if the translation for particular attribute is null. It will try to get the translation for fallback locale.
+then if the translation for particular attribute is `null`. It will try to get the translation for fallback locale.
 
 ### Retrieve all translation
 ```php
@@ -98,7 +98,7 @@ The translation array has structure as below:
 
 ## Delete Translation
 
-#### deleteTranslatableAttribute( string $key, string $locale = null ): void
+#### `deleteTranslatableAttribute( string $key, string $locale = null ): void`
 This will delete specfic attribute for all or speficied transaltion.
 If the original translation as below:
 
@@ -147,7 +147,7 @@ the result will as below
     ]
 
 
-#### deleteTranslatableWithLocale(string $locale ): void
+#### `deleteTranslatableWithLocale(string $locale ): void`
 
 This will remove all translation with specified locale.
 if we call
