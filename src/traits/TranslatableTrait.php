@@ -13,6 +13,9 @@ use Illuminate\Database\Eloquent\Relations\Relation;
 
 trait TranslatableTrait
 {
+
+    public $fallback = false;
+
     public function translations(): Relation {
         return $this->morphMany(Translatable::class, "model");
     }
@@ -118,17 +121,38 @@ trait TranslatableTrait
      * @param $key
      * @return null
      */
-    private function parseTranslatableAttribute($key): ?string {
+    private function parseTranslatableAttribute($key, $locale = null): ?string {
 
-        if ($translation = $this->translations()->locale(app()->getLocale())
+        $locale = $locale ?? app()->getLocale();
+
+        $fallback = $this->fallback === true;
+
+        $fallback_locale = config("app.fallback_locale", null);
+
+        $fallback_locale = $locale === $fallback_locale ? null : $fallback_locale;
+
+        if ($translation = $this->translations()->locale($locale)
                                 ->first()) {
 
             $decodedJson = $translation->content;
 
-            return $decodedJson[$key] ?? null;
+            $result = $decodedJson[$key] ?? null;
+
+            if ($result !== null) {
+                return $result;
+            }
+
+            if ($fallback and $fallback_locale) {
+                return $this->parseTranslatableAttribute($key,
+                    $fallback_locale);
+            }
+        } elseif ($fallback and $fallback_locale) {
+            return $this->parseTranslatableAttribute($key,
+                $fallback_locale);
         }
 
         return null;
     }
+
 
 }
