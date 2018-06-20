@@ -47,6 +47,15 @@ trait TranslatableTrait
 
     }
 
+    public function getTranslatablesAttribute(): array {
+
+        $conversion = function (array $previous, Translatable $trans) {
+            return $this->conversion($previous, $trans);
+        };
+
+        return $this->translations->reduce($conversion, []);
+    }
+
     public function __get($key) {
         $result = parent::__get($key);
 
@@ -99,4 +108,12 @@ trait TranslatableTrait
             'content' => json_encode($value)
         ]);
     }
+
+    private function conversion(array $previous, Translatable $trans): array {
+
+        $previous[$trans->code] = json_decode($trans->content, true);
+
+        return $previous;
+    }
+
 }
