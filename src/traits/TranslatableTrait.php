@@ -14,12 +14,22 @@ use Illuminate\Database\Eloquent\Relations\Relation;
 trait TranslatableTrait
 {
 
+    /**
+     * @var bool
+     */
     public $fallback = false;
 
+    /**
+     * @return Relation
+     */
     public function translations(): Relation {
         return $this->morphMany(Translatable::class, "model");
     }
 
+    /**
+     * @param array $content
+     * @return mixed
+     */
     public static function createTranslations(array $content) {
 
         $newInstance = self::createNewInstance();
@@ -32,6 +42,9 @@ trait TranslatableTrait
         return $newInstance;
     }
 
+    /**
+     * @param array $content
+     */
     public function updateTranslations(array $content) {
 
         foreach ($content as $code => $value) {
@@ -50,6 +63,9 @@ trait TranslatableTrait
 
     }
 
+    /**
+     * @return array
+     */
     public function getTranslatablesAttribute(): array {
 
         $conversion = function (array $previous, Translatable $trans) {
@@ -59,6 +75,10 @@ trait TranslatableTrait
         return $this->translations->reduce($conversion, []);
     }
 
+    /**
+     * @param string      $key
+     * @param string|null $locale
+     */
     public function deleteTranslatableAttribute(
         string $key, string $locale = null
     ): void {
@@ -69,6 +89,17 @@ trait TranslatableTrait
 
     }
 
+    /**
+     * @param string $locale
+     */
+    public function deleteTranslatableWithLocale(string $locale): void {
+        $this->translations()->locale($locale)->delete();
+    }
+
+    /**
+     * @param $key
+     * @return null|string
+     */
     public function __get($key) {
 
         $result = parent::__get($key);
@@ -110,6 +141,11 @@ trait TranslatableTrait
         ]);
     }
 
+    /**
+     * @param array        $previous
+     * @param Translatable $trans
+     * @return array
+     */
     private function conversion(array $previous, Translatable $trans): array {
 
         $previous[$trans->code] = $trans->content;
@@ -118,8 +154,9 @@ trait TranslatableTrait
     }
 
     /**
-     * @param $key
-     * @return null
+     * @param      $key
+     * @param null $locale
+     * @return null|string
      */
     private function parseTranslatableAttribute($key, $locale = null): ?string {
 
