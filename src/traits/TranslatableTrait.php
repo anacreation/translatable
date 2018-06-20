@@ -56,23 +56,21 @@ trait TranslatableTrait
         return $this->translations->reduce($conversion, []);
     }
 
+    public function deleteTranslatableAttribute(
+        string $key, string $locale = null
+    ): void {
+
+        $results = $this->translations()->locale($locale)->get();
+
+        $results->each->deleteContentAttribute($key);
+
+    }
+
     public function __get($key) {
+
         $result = parent::__get($key);
 
-        if ($result !== null) {
-            return $result;
-        }
-
-        if ($translation = $this->translations()->whereCode(app()->getLocale())
-                                ->first()) {
-
-            $decodedJson = json_decode($translation->content, true);
-
-            return $decodedJson[$key] ?? null;
-
-        }
-
-        return null;
+        return $result !== null ? $result : $this->parseTranslatableAttribute($key);
     }
 
     /**
@@ -81,11 +79,11 @@ trait TranslatableTrait
      */
     private function updateExistingTranslation($translation, $value): void {
 
-        $oldData = json_decode($translation->content, true);
+        $oldData = $translation->content;
 
         $mergedData = $value + $oldData;
 
-        $translation->content = json_encode($mergedData);
+        $translation->content = $mergedData;
 
         $translation->save();
     }
@@ -105,15 +103,32 @@ trait TranslatableTrait
     private function createNewTranslation($code, $value): void {
         $this->translations()->create([
             "code"    => $code,
-            'content' => json_encode($value)
+            'content' => $value
         ]);
     }
 
     private function conversion(array $previous, Translatable $trans): array {
 
-        $previous[$trans->code] = json_decode($trans->content, true);
+        $previous[$trans->code] = $trans->content;
 
         return $previous;
+    }
+
+    /**
+     * @param $key
+     * @return null
+     */
+    private function parseTranslatableAttribute($key): ?string {
+
+        if ($translation = $this->translations()->locale(app()->getLocale())
+                                ->first()) {
+
+            $decodedJson = $translation->content;
+
+            return $decodedJson[$key] ?? null;
+        }
+
+        return null;
     }
 
 }
